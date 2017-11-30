@@ -6,18 +6,26 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/smart_menu"
-        android:layout_centerHorizontal="true"
-        android:text="text"/>
-
     <com.ue.smartmenu.SmartMenu
-        android:id="@+id/smart_menu"
+        android:id="@+id/smartMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        app:bg_color="#b4282d"
+        app:dot_color="@android:color/white"
+        app:dot_distance="25dp"
+        app:dot_radius="2dp"
+        app:inner_padding="15dp"
+        app:outer_padding="20dp"
+        app:shadow_color="#40000000"
+        app:vertical_padding="13dp"/>
+
+    <com.ue.smartmenu.SmartMenu
+        android:id="@+id/smartMenu2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/smartMenu"
+        android:layout_centerHorizontal="true"
         app:bg_color="#b4282d"
         app:dot_color="@android:color/white"
         app:dot_distance="25dp"

@@ -56,6 +56,10 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
 
     private SmartButton mSwitchBtn;
 
+    public void setSmartListener(OnClickListener smartListener) {
+        mSwitchBtn.setOnClickListener(smartListener);
+    }
+
     private void init() {
         mSwitchBtn = new SmartButton(getContext());
         mSwitchBtn.setOnClickListener(this);
