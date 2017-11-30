@@ -2,12 +2,15 @@ package com.ue.smartmenu;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.jake.smart.R;
 
 /**
  * Created by Jake on 2016/9/12.
@@ -19,8 +22,8 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
     /**
      * the max length of X
      */
-    private int mLength;
-    private float mMinRadius = 6;
+    private int mDotDistance;
+    private float mDotRadius = 6;
     private float mCenterX;
     private float mCenterY;
 
@@ -30,17 +33,35 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
     private RectF mLeftRectF = new RectF();
     private RectF mRightRectF = new RectF();
 
-    private int mBackgroundColor = Color.parseColor("#b4282d");
-    private int mShadowColor = Color.parseColor("#40000000");
-    private int mDotColor = Color.WHITE;
+    private int mBackgroundColor;
+    private int mShadowColor;
+    private int mDotColor;
 
     public SmartButton(Context context) {
         this(context, null);
     }
 
     public SmartButton(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
+    }
+
+    public SmartButton(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SmartButton);
+        mDotRadius = ta.getDimensionPixelSize(R.styleable.SmartButton_dot_radius, dip2px(context, 1));
+        mDotDistance = ta.getDimensionPixelSize(R.styleable.SmartButton_dot_distance, dip2px(context, 25));
+        mDotColor = ta.getColor(R.styleable.SmartButton_dot_color, Color.WHITE);
+        mShadowColor = ta.getColor(R.styleable.SmartButton_shadow_color, Color.WHITE);
+        mBackgroundColor = ta.getColor(R.styleable.SmartButton_bg_color, Color.BLACK);
+        ta.recycle();
+
         init();
+    }
+
+    private int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
     private void init() {
@@ -64,7 +85,7 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
     }
 
     private void drawCenter(Canvas canvas) {
-        canvas.drawCircle(mCenterX, mCenterY, mMinRadius, mPaint);
+        canvas.drawCircle(mCenterX, mCenterY, mDotRadius, mPaint);
     }
 
     private void adjustCanvas(Canvas canvas, float angle) {
@@ -75,15 +96,15 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
     }
 
     private void drawContent(Canvas canvas) {
-        int length = (int) ((mLength - 2 * mMinRadius) * mPercent);
-        drawLeft(canvas, mMinRadius, length);
-        drawRight(canvas, mMinRadius, length);
+        int length = (int) ((mDotDistance - 2 * mDotRadius) * mPercent);
+        drawLeft(canvas, mDotRadius, length);
+        drawRight(canvas, mDotRadius, length);
     }
 
     private void drawLeft(Canvas canvas, float radius, int length) {
         adjustCanvas(canvas, 45 * mPercent);
-        float start = mCenterX - mLength / 2;
-        mLeftRectF.set(start, mCenterY - radius, start + length + 2 * mMinRadius, mCenterY + radius);
+        float start = mCenterX - mDotDistance / 2;
+        mLeftRectF.set(start, mCenterY - radius, start + length + 2 * mDotRadius, mCenterY + radius);
         canvas.drawRoundRect(mLeftRectF, radius, radius, mPaint);
         canvas.restore();
 
@@ -91,8 +112,8 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
 
     private void drawRight(Canvas canvas, float radius, int length) {
         adjustCanvas(canvas, -45 * mPercent);
-        float start = mCenterX + mLength / 2;
-        mRightRectF.set(start - length - 2 * mMinRadius, mCenterY - radius, start, mCenterY + radius);
+        float start = mCenterX + mDotDistance / 2;
+        mRightRectF.set(start - length - 2 * mDotRadius, mCenterY - radius, start, mCenterY + radius);
         canvas.drawRoundRect(mRightRectF, radius, radius, mPaint);
         canvas.restore();
     }
@@ -117,15 +138,11 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
     }
 
     void setRadius(float radius) {
-        mMinRadius = radius;
+        mDotRadius = radius;
     }
 
     void setLength(int length) {
-        mLength = length;
-    }
-
-    Paint getBackgroundPaint() {
-        return mBackgroundPaint;
+        mDotDistance = length;
     }
 
     void setDotColor(int color) {

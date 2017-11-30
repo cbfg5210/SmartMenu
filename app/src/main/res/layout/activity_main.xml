@@ -12,12 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         app:bg_color="#b4282d"
-        app:dot_color="@android:color/white"
-        app:dot_distance="25dp"
-        app:dot_radius="2dp"
         app:inner_padding="15dp"
         app:outer_padding="20dp"
         app:shadow_color="#40000000"
+        app:smart_view_res="@layout/layout_smart_button"
         app:vertical_padding="13dp"/>
 
     <com.ue.smartmenu.SmartMenu
@@ -27,11 +25,9 @@
         android:layout_below="@id/smartMenu"
         android:layout_centerHorizontal="true"
         app:bg_color="#b4282d"
-        app:dot_color="@android:color/white"
-        app:dot_distance="25dp"
-        app:dot_radius="2dp"
         app:inner_padding="15dp"
         app:outer_padding="20dp"
         app:shadow_color="#40000000"
+        app:smart_view_res="@layout/layout_text_view"
         app:vertical_padding="13dp"/>
 </RelativeLayout>

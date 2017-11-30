@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ue.smartmenu.SmartButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sbSmartView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:bg_color="#b4282d"
+    app:dot_color="@android:color/white"
+    app:dot_distance="25dp"
+    app:dot_radius="2dp"
+    app:shadow_color="#40000000"/>

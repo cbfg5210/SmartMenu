@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvMenuText"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_smart_view"
+    android:gravity="center"
+    android:text="GO"
+    android:textColor="@color/white"
+    android:textSize="18sp"/>

@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -41,33 +43,39 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
 
     private boolean mOpen;
 
-    private ValueAnimator mSwitchAnimation;
     private RectF mRect = new RectF();
-
+    private ValueAnimator mSwitchAnimation;
     private ValueAnimator mScaleAnimator;
+
+    private Paint mBackgroundPaint;
+
     private int mSwitchDuration = 300;
     private int mScaleDuration = 100;
     private int mCurrentTargetPosition;
-    private float mDotRadius;
-    private int mDotDistance;
+
     private int mBackgroundColor;
     private int mShadowColor;
-    private int mDotColor;
+    private int smartViewRes;
 
-    private SmartButton mSwitchBtn;
+    private View smartView;
 
     public void setSmartListener(OnClickListener smartListener) {
-        mSwitchBtn.setOnClickListener(smartListener);
+        smartView.setOnClickListener(smartListener);
     }
 
     private void init() {
-        mSwitchBtn = new SmartButton(getContext());
-        mSwitchBtn.setOnClickListener(this);
-        mSwitchBtn.setRadius(mDotRadius);
-        mSwitchBtn.setLength(mDotDistance);
-        mSwitchBtn.setDotColor(mDotColor);
-        mSwitchBtn.setShadowColor(mShadowColor);
-        mSwitchBtn.setBackgroundColor(mBackgroundColor);
+        mBackgroundPaint = new Paint();
+        mBackgroundPaint.setAntiAlias(true);
+        mBackgroundPaint.setDither(true);
+        mBackgroundPaint.setColor(mBackgroundColor);
+        mBackgroundPaint.setShadowLayer(15, 0, 0, mShadowColor);
+
+        if (smartViewRes == 0) {
+            smartViewRes = R.layout.layout_smart_button;
+        }
+        smartView = LayoutInflater.from(getContext()).inflate(smartViewRes, null);
+        smartView.setOnClickListener(this);
+
         initScaleAnimator();
         initSwitchAnimator();
     }
@@ -79,15 +87,12 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
         mInnerPadding = ta.getDimensionPixelSize(R.styleable.SmartMenu_inner_padding, dip2px(context, DEFAULT_PADDING));
         mVerticalPadding = ta.getDimensionPixelSize(R.styleable.SmartMenu_vertical_padding, dip2px(context, DEFAULT_PADDING));
         mSwitchBtnSize = ta.getDimensionPixelSize(R.styleable.SmartMenu_smart_btn_size, dip2px(context, DEFAULT_BTN_SIZE));
-        mDotRadius = ta.getDimensionPixelSize(R.styleable.SmartMenu_dot_radius, dip2px(context, 1));
-        mDotDistance = ta.getDimensionPixelSize(R.styleable.SmartMenu_dot_distance, dip2px(context, 25));
-        mDotColor = ta.getColor(R.styleable.SmartMenu_dot_color, Color.WHITE);
-        mShadowColor = ta.getColor(R.styleable.SmartMenu_shadow_color, Color.parseColor("#40000000"));
-        mBackgroundColor = ta.getColor(R.styleable.SmartMenu_bg_color, Color.parseColor("#b4282d"));
+        mShadowColor = ta.getColor(R.styleable.SmartMenu_shadow_color, Color.WHITE);
+        mBackgroundColor = ta.getColor(R.styleable.SmartMenu_bg_color, Color.BLACK);
         mMenuHeight = mSwitchBtnSize - 2 * mVerticalPadding;
+        smartViewRes = ta.getResourceId(R.styleable.SmartMenu_smart_view_res, 0);
         ta.recycle();
         init();
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     @Override
@@ -138,7 +143,7 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
 
     private void fillLayout(BaseAdapter mAdapter) {
         removeAllViews();
-        addView(mSwitchBtn, new LayoutParams(mSwitchBtnSize, mSwitchBtnSize));
+        addView(smartView, new LayoutParams(mSwitchBtnSize, mSwitchBtnSize));
 
         for (int i = 0, count = mAdapter.getCount(); i < count; i++) {
             View view = mAdapter.getView(i, null, this);
@@ -161,7 +166,7 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
             width += view.getMeasuredWidth();
             width += mInnerPadding;
         }
-        mSwitchBtn.measure(
+        smartView.measure(
                 MeasureSpec.makeMeasureSpec(mSwitchBtnSize, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(mSwitchBtnSize, MeasureSpec.EXACTLY));
 
@@ -248,8 +253,8 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
             mSwitchAnimation.addUpdateListener(animation -> {
                 updateAnimation(animation);
             });
-            if (mSwitchBtn != null) {
-                mSwitchAnimation.addUpdateListener(mSwitchBtn);
+            if (smartView != null && (smartView instanceof SmartButton)) {
+                mSwitchAnimation.addUpdateListener((SmartButton) smartView);
             }
             mSwitchAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
             mSwitchAnimation.addListener(new AnimatorListenerAdapter() {
@@ -280,11 +285,12 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
     }
 
     public void updateAnimation(ValueAnimator valueAnimator) {
-        float start = getMeasuredWidth() / 2;
-        float end = getMeasuredWidth() / 2;
-        float length = getMeasuredWidth() / 2 - 10;
+        int centerX = getMeasuredWidth() / 2;
+        float start = centerX;
+        float end = centerX;
+        float length = centerX - 10;
         float percent = (float) valueAnimator.getAnimatedValue() / 100.f;
-        length = length * percent;
+        length *= percent;
         mRect.set(start - length, mVerticalPadding, end + length, getMeasuredHeight() - mVerticalPadding);
         invalidate();
     }
@@ -292,7 +298,8 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         if (mRect != null) {
-            canvas.drawRoundRect(mRect, mSwitchBtnSize / 3, mSwitchBtnSize / 3, mSwitchBtn.getBackgroundPaint());
+            //rx：x方向上的圆角半径；ry：y方向上的圆角半径。
+            canvas.drawRoundRect(mRect, mSwitchBtnSize / 3, mSwitchBtnSize / 3, mBackgroundPaint);
         }
         super.dispatchDraw(canvas);
     }
