@@ -17,9 +17,6 @@ import android.widget.BaseAdapter;
 
 import com.jake.smart.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SmartMenu extends ViewGroup implements View.OnClickListener {
     /**
      * measurement unit is dp
@@ -40,7 +37,6 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
 
     private ValueAnimator mSwitchAnimation;
     private RectF mRect = new RectF();
-    private ArrayList<ArrayList<View>> mViews = new ArrayList<>();
 
     private ValueAnimator mScaleAnimator;
     private int mSwitchDuration = 300;
@@ -130,22 +126,16 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
     private void fillLayout(BaseAdapter mAdapter) {
         removeAllViews();
         addView(mSwitchBtn, new LayoutParams(mSwitchBtnSize, mSwitchBtnSize));
-        mViews.clear();
 
         for (int i = 0, count = mAdapter.getCount(); i < count; i++) {
             View view = mAdapter.getView(i, null, this);
             view.setVisibility(View.GONE);
             addView(view, new LayoutParams(LayoutParams.WRAP_CONTENT, mMenuHeight));
         }
-        for (int i = (getChildCount() - 1) / 2, j = 0; i > 0; i--) {
-            ArrayList<View> viewList = new ArrayList<>();
-            viewList.add(getChildAt(i));
-            mViews.add(j++, viewList);
+        int size = getChildCount() / 2;
+        if (size > 0) {
+            mScaleAnimator.setRepeatCount(size - 1);
         }
-        for (int i = getChildCount() / 2 + 1, j = 0; i < getChildCount(); i++) {
-            mViews.get(j++).add(getChildAt(i));
-        }
-        mScaleAnimator.setRepeatCount(mViews.size() - 1);
     }
 
     @Override
@@ -203,11 +193,19 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
         }
         mScaleAnimator = ValueAnimator.ofFloat(0, 1f);
         mScaleAnimator.addUpdateListener(valueAnimator -> {
-            List<View> views = mViews.get(mCurrentTargetPosition);
-            for (View view : views) {
-                setViewScale(view, (Float) valueAnimator.getAnimatedValue());
-                view.setAlpha((Float) valueAnimator.getAnimatedValue());
+            int a = getChildCount() / 2 - mCurrentTargetPosition;
+            int b = getChildCount() - a;
+
+            float value = (float) valueAnimator.getAnimatedValue();
+            setViewScale(getChildAt(a), value);
+            getChildAt(a).setAlpha(value);
+
+            if (a == b) {
+                return;
             }
+
+            setViewScale(getChildAt(b), value);
+            getChildAt(b).setAlpha(value);
         });
         mScaleAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -215,8 +213,8 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
                 if (mOpen) {
                     //open
                     mCurrentTargetPosition++;
-                    if (mCurrentTargetPosition >= mViews.size()) {
-                        mCurrentTargetPosition = mViews.size() - 1;
+                    if (mCurrentTargetPosition >= (getChildCount() / 2)) {
+                        mCurrentTargetPosition = getChildCount() / 2 - 1;
                     }
                     return;
                 }

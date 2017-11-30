@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 "A",
                 "A",
                 "A",
-                "A",
+//                "A",
         }, (AdapterView<?> parent, View view, int position, long id) -> {
             toast("item" + position);
         });
