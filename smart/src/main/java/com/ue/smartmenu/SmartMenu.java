@@ -17,6 +17,12 @@ import android.widget.BaseAdapter;
 
 import com.jake.smart.R;
 
+/**
+ * 自定义布局容器(集成ViewGroup)，则一般需要实现/重载三个方法，
+ * 一个是onMeasure()，也是用来测量尺寸；
+ * 一个是onLayout()，用来布局子控件；
+ * 还有一个是dispatchDraw()，用来绘制UI。
+ */
 public class SmartMenu extends ViewGroup implements View.OnClickListener {
     /**
      * measurement unit is dp
@@ -82,8 +88,8 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        int layerCount = (int) Math.ceil((getChildCount() - 1) / 2);
-        int centerX = getMeasuredWidth() / 2;
+        //Math.ceil(x) 返回大于参数x的最小整数,即对浮点数向上取整.
+        int layerCount = (getChildCount() - 1) / 2;
         if (layerCount <= 0) {
             return;
         }
@@ -93,10 +99,11 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
             view.layout(left, mVerticalPadding, left + view.getMeasuredWidth(), getMeasuredHeight() - mVerticalPadding);
             left += view.getMeasuredWidth() + mInnerPadding;
             if (i == layerCount) {
-                left += mInnerPadding + mSwitchBtnSize;
+                view = getChildAt(0);
+                view.layout(left, 0, left + view.getMeasuredWidth(), getMeasuredHeight());
+                left += view.getMeasuredWidth() + mInnerPadding;
             }
         }
-        mSwitchBtn.layout(centerX - mSwitchBtnSize / 2, 0, centerX + mSwitchBtnSize / 2, getMeasuredHeight());
     }
 
     private void setViewScale(View view, float scale) {
@@ -105,8 +112,10 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
         } else if (view.getVisibility() != View.VISIBLE) {
             view.setVisibility(View.VISIBLE);
         }
+        //setPivotX,setPivotY设置锚点坐标值，默认是view的中心，不然缩放可能会改变缩放后的位置
         view.setPivotX(view.getMeasuredWidth() / 2);
         view.setPivotY(view.getMeasuredHeight() / 2);
+        //setScaleX：宽度变为原来的scale倍，setScaleY：高度变为原来的scale倍
         view.setScaleX(scale);
         view.setScaleY(scale);
     }
@@ -162,7 +171,7 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
                     getMeasuredHeight() - mVerticalPadding);
     }
 
-    public static int dip2px(Context context, float dpValue) {
+    private int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }

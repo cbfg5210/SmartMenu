@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
         smartMenu.setTexts(new String[]{
                 "A",
-                "A",
-                "A",
-                "A",
-                "A",
-//                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+//                "F",
         }, (AdapterView<?> parent, View view, int position, long id) -> {
             toast("item" + position);
         });
