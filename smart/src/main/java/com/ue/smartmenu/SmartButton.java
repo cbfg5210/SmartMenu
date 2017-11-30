@@ -1,4 +1,4 @@
-package com.jake.smart;
+package com.ue.smartmenu;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -20,26 +20,18 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
      * the max length of X
      */
     private int mLength;
-
     private float mMinRadius = 6;
-
-
     private float mCenterX;
-
     private float mCenterY;
 
     private Paint mPaint;
-
     private Paint mBackgroundPaint;
 
     private RectF mLeftRectF = new RectF();
-
     private RectF mRightRectF = new RectF();
 
     private int mBackgroundColor = Color.parseColor("#b4282d");
-
     private int mShadowColor = Color.parseColor("#40000000");
-
     private int mDotColor = Color.WHITE;
 
     public SmartButton(Context context) {

@@ -1,4 +1,4 @@
-package com.jake.smart;
+package com.ue.smartmenu;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.jake.smart.R;
 
 import name.gudong.statebackground.OneDrawable;
 

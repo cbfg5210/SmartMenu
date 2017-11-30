@@ -1,4 +1,4 @@
-package com.jake.smartmenu;
+package com.ue.smart_menu;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.jake.smart.SmartMenu;
+import com.jake.smartmenu.R;
+import com.ue.smartmenu.SmartMenu;
 
 
 public class MainActivity extends AppCompatActivity {

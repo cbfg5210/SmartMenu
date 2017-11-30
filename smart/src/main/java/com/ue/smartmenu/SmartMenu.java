@@ -1,4 +1,4 @@
-package com.jake.smart;
+package com.ue.smartmenu;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+
+import com.jake.smart.R;
 
 import java.util.ArrayList;
 import java.util.List;
