@@ -31,16 +31,18 @@ public class MainActivity extends AppCompatActivity {
             toast("item" + position);
         });
 
-        smartMenu2.setImages(new int[]{
-                R.mipmap.icon_album,
-                R.mipmap.icon_comment,
-                R.mipmap.icon_comment,
-                R.mipmap.icon_comment,
-                R.mipmap.icon_draft,
-                R.mipmap.icon_like
-        }, (AdapterView<?> parent, View view, int position, long id) -> {
-            toast("item" + position);
-        });
+        smartMenu2.setImages(
+                new int[]{
+                        R.mipmap.icon_album,
+                        R.mipmap.icon_comment,
+                        R.mipmap.icon_comment,
+                        R.mipmap.icon_comment,
+                        R.mipmap.icon_draft,
+                        R.mipmap.icon_like
+                }
+                , (AdapterView<?> parent, View view, int position, long id) -> {
+                    toast("item" + position);
+                });
         smartMenu2.toggle();
 //        smartMenu2.setSmartListener(v -> {
 //            toast("smart");

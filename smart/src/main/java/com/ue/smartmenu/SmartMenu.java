@@ -100,6 +100,11 @@ public class SmartMenu extends ViewGroup {
         //Math.ceil(x) 返回大于参数x的最小整数,即对浮点数向上取整.
         int layerCount = (getChildCount() - 1) / 2;
         if (layerCount <= 0) {
+            smartView.layout(
+                    getMeasuredWidth() / 2 - mSwitchBtnSize / 2,
+                    0,
+                    getMeasuredWidth() / 2 + mSwitchBtnSize / 2,
+                    getMeasuredHeight());
             return;
         }
         left = mOuterPadding;
@@ -208,16 +213,17 @@ public class SmartMenu extends ViewGroup {
             int b = getChildCount() - a;
 
             float value = (float) valueAnimator.getAnimatedValue();
-            setViewScale(getChildAt(a), value);
-            getChildAt(a).setAlpha(value);
-
-            if (a == b) {
+            if (a >= 0 && a < getChildCount()) {
+                setViewScale(getChildAt(a), value);
+                getChildAt(a).setAlpha(value);
+            }
+            if (a == b || b < 0 || b >= getChildCount()) {
                 return;
             }
-
             setViewScale(getChildAt(b), value);
             getChildAt(b).setAlpha(value);
         });
+
         mScaleAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationRepeat(Animator animation) {
@@ -243,13 +249,16 @@ public class SmartMenu extends ViewGroup {
         if (mSwitchAnimation == null) {
             mSwitchAnimation = ValueAnimator.ofFloat(0, 100);
             mSwitchAnimation.setDuration(mSwitchDuration);
+            mSwitchAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+
             mSwitchAnimation.addUpdateListener(animation -> {
                 updateAnimation(animation);
             });
-            if (smartView != null && (smartView instanceof SmartButton)) {
-                mSwitchAnimation.addUpdateListener((SmartButton) smartView);
+
+            if (smartView instanceof ValueAnimator.AnimatorUpdateListener) {
+                mSwitchAnimation.addUpdateListener((ValueAnimator.AnimatorUpdateListener) smartView);
             }
-            mSwitchAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+
             mSwitchAnimation.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -269,6 +278,9 @@ public class SmartMenu extends ViewGroup {
     }
 
     private void toggleItems(boolean isShow) {
+        if (getChildCount() <= 1) {
+            return;
+        }
         if (isShow) {
             mScaleAnimator.setFloatValues(0, 1);
         } else {
