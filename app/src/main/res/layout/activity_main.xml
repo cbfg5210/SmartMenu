@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        app:bgColor="#b4282d"
         app:innerPadding="15dp"
         app:outerPadding="20dp"
         app:shadowColor="#40000000"
@@ -35,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:paddingVertical="2dp"
         android:text="GO"
         android:textSize="18sp"
         app:bgColor="#b4282d"
@@ -42,4 +42,11 @@
         app:outerPadding="20dp"
         app:shadowColor="#40000000"
         app:verticalPadding="13dp"/>
+
+    <TextView
+        android:id="@+id/tvTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:textSize="18sp"/>
 </LinearLayout>

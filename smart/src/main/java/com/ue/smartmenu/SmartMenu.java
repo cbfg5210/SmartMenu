@@ -183,7 +183,7 @@ public class SmartMenu extends ViewGroup {
     }
 
     public void setTexts(String[] texts, AdapterView.OnItemClickListener itemClickListener) {
-        fillLayout(new SmartMenuAdapter(texts, itemClickListener));
+        fillLayout(new SmartMenuAdapter(mBackgroundColor, texts, itemClickListener));
     }
 
     private void fillLayout(BaseAdapter mAdapter) {

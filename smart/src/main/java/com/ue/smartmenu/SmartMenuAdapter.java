@@ -1,8 +1,13 @@
 package com.ue.smartmenu;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.support.annotation.ColorInt;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +16,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jake.smart.R;
-
 import name.gudong.statebackground.OneDrawable;
 
 class SmartMenuAdapter extends BaseAdapter implements View.OnClickListener {
     private int[] images;
     private String[] texts;
+    private int textBgColorInt;
+
     private AdapterView.OnItemClickListener listener;
 
     public SmartMenuAdapter(int[] images, AdapterView.OnItemClickListener itemClickListener) {
@@ -25,9 +30,25 @@ class SmartMenuAdapter extends BaseAdapter implements View.OnClickListener {
         this.listener = itemClickListener;
     }
 
-    public SmartMenuAdapter(String[] texts, AdapterView.OnItemClickListener itemClickListener) {
+    public SmartMenuAdapter(@ColorInt int bgColor, String[] texts, AdapterView.OnItemClickListener itemClickListener) {
         this.texts = texts;
         this.listener = itemClickListener;
+
+        int r = Color.red(bgColor) + 65;
+        int g = Color.green(bgColor) + 65;
+        int b = Color.blue(bgColor) + 65;
+
+        if (r > 255) {
+            r -= 255;
+        }
+        if (g > 255) {
+            g -= 255;
+        }
+        if (b > 255) {
+            b -= 255;
+        }
+
+        this.textBgColorInt = Color.rgb(r, g, b);
     }
 
     @Override
@@ -57,7 +78,6 @@ class SmartMenuAdapter extends BaseAdapter implements View.OnClickListener {
         Context context = viewGroup.getContext();
         if (images != null) {
             ImageView imageView = new ImageView(context);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(30, 30));
 
             Drawable icon = OneDrawable.createBgDrawableWithDarkMode(context, images[i], 0.4f);
             imageView.setImageDrawable(icon);
@@ -65,11 +85,11 @@ class SmartMenuAdapter extends BaseAdapter implements View.OnClickListener {
             targetView = imageView;
         } else {
             TextView textView = new TextView(context);
-            textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
             textView.setGravity(Gravity.CENTER);
             textView.setText(texts[i]);
             textView.setTextSize(16f);
-            textView.setTextColor(ContextCompat.getColor(context, R.color.white));
+            textView.setTextColor(Color.WHITE);
+            textView.setBackgroundDrawable(getShapeStateListDrawable(textBgColorInt));
 
             targetView = textView;
         }
@@ -77,6 +97,16 @@ class SmartMenuAdapter extends BaseAdapter implements View.OnClickListener {
         targetView.setTag(i);
 
         return targetView;
+    }
+
+    private StateListDrawable getShapeStateListDrawable(@ColorInt int fillColor) {
+        ShapeDrawable shapeDrawable = new ShapeDrawable(new OvalShape());
+        shapeDrawable.getPaint().setColor(fillColor);
+
+        StateListDrawable stateListDrawable = new StateListDrawable();
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, shapeDrawable);
+        stateListDrawable.addState(new int[]{}, new ColorDrawable(Color.TRANSPARENT));
+        return stateListDrawable;
     }
 
     @Override
