@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
             toast("item" + position);
         });
         smartMenu2.toggle();
-        smartMenu2.setSmartListener(v -> {
-            toast("smart");
-        });
+//        smartMenu2.setSmartListener(v -> {
+//            toast("smart");
+//        });
     }
 
     private void toast(String msg) {

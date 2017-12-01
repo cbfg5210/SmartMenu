@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ue.smartmenu.ContentButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:src="@mipmap/icon_album"
+    android:textColor="@color/white"
+    android:textSize="16sp"
+    app:bg_color="#b4282d"
+    app:image_ratio="0.4"
+    app:shadow_color="#40000000"/>

@@ -28,6 +28,6 @@
         app:inner_padding="15dp"
         app:outer_padding="20dp"
         app:shadow_color="#40000000"
-        app:smart_view_res="@layout/layout_text_view"
+        app:smart_view_res="@layout/layout_content_button"
         app:vertical_padding="13dp"/>
 </RelativeLayout>

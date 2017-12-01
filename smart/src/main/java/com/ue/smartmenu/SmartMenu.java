@@ -25,7 +25,7 @@ import com.jake.smart.R;
  * 一个是onLayout()，用来布局子控件；
  * 还有一个是dispatchDraw()，用来绘制UI。
  */
-public class SmartMenu extends ViewGroup implements View.OnClickListener {
+public class SmartMenu extends ViewGroup {
     /**
      * measurement unit is dp
      */
@@ -74,7 +74,7 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
             smartViewRes = R.layout.layout_smart_button;
         }
         smartView = LayoutInflater.from(getContext()).inflate(smartViewRes, null);
-        smartView.setOnClickListener(this);
+        smartView.setOnClickListener(v -> toggle());
 
         initScaleAnimator();
         initSwitchAnimator();
@@ -183,13 +183,6 @@ public class SmartMenu extends ViewGroup implements View.OnClickListener {
     private int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view instanceof SmartButton) {
-            toggle();
-        }
     }
 
     public void toggle() {
