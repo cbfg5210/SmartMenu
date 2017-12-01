@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         smartMenu3.setTexts(new String[]{
                 "AAA",
                 "BBB",
-                "C",
+//                "C",
                 "D",
                 "E",
                 "F",

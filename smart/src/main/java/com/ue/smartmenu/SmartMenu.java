@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,6 +162,7 @@ public class SmartMenu extends ViewGroup {
     }
 
     private void setViewScale(View view, float scale) {
+        Log.e("SmartMenu", "setViewScale: scale=" + scale);
         if (scale == 0) {
             view.setVisibility(View.GONE);
         } else if (view.getVisibility() != View.VISIBLE) {
@@ -248,27 +250,15 @@ public class SmartMenu extends ViewGroup {
             return;
         }
         mScaleAnimator = ValueAnimator.ofFloat(0, 1f);
-        mScaleAnimator.addUpdateListener(valueAnimator -> {
-            int a = getChildCount() / 2 - mCurrentTargetPosition;
-            int b = getChildCount() - a;
-
-            float value = (float) valueAnimator.getAnimatedValue();
-            if (a >= 0 && a < getChildCount()) {
-                setViewScale(getChildAt(a), value);
-                getChildAt(a).setAlpha(value);
-            }
-            if (a == b || b < 0 || b >= getChildCount()) {
-                return;
-            }
-            setViewScale(getChildAt(b), value);
-            getChildAt(b).setAlpha(value);
-        });
+        mScaleAnimator.addUpdateListener(valueAnimator -> updateScaleAlpha((float) valueAnimator.getAnimatedValue()));
 
         mScaleAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationRepeat(Animator animation) {
                 if (mOpen) {
                     //open
+                    //scale alpha设置回最初状态，因为在updateListener中去到的value值不一定到1
+                    updateScaleAlpha(1);
                     mCurrentTargetPosition++;
                     if (mCurrentTargetPosition >= (getChildCount() / 2)) {
                         mCurrentTargetPosition = getChildCount() / 2 - 1;
@@ -276,6 +266,8 @@ public class SmartMenu extends ViewGroup {
                     return;
                 }
                 //close
+                //scale alpha设置回最初状态，因为在updateListener中去到的value值不一定到0
+                updateScaleAlpha(0);
                 mCurrentTargetPosition--;
                 if (mCurrentTargetPosition < 0) {
                     mCurrentTargetPosition = 0;
@@ -283,6 +275,18 @@ public class SmartMenu extends ViewGroup {
             }
         });
         mScaleAnimator.setDuration(mScaleDuration);
+    }
+
+    private void updateScaleAlpha(float value) {
+        int a = getChildCount() / 2 - mCurrentTargetPosition;
+        int b = getChildCount() - a;
+        Log.e("SmartMenu", "initScaleAnimator: mCurrentTargetPosition=" + mCurrentTargetPosition + ",a=" + a);
+
+        setViewScale(getChildAt(a), value);
+        getChildAt(a).setAlpha(value);
+
+        setViewScale(getChildAt(b), value);
+        getChildAt(b).setAlpha(value);
     }
 
     private void initSwitchAnimator() {
