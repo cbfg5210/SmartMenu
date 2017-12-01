@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -13,33 +12,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        app:bg_color="#b4282d"
-        app:inner_padding="15dp"
-        app:outer_padding="20dp"
-        app:shadow_color="#40000000"
-        app:vertical_padding="13dp"/>
+        app:bgColor="#b4282d"
+        app:innerPadding="15dp"
+        app:outerPadding="20dp"
+        app:shadowColor="#40000000"
+        app:verticalPadding="13dp"/>
 
     <com.ue.smartmenu.SmartMenu
         android:id="@+id/smartMenu2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        app:bg_color="#b4282d"
-        app:inner_padding="15dp"
-        app:outer_padding="20dp"
-        app:shadow_color="#40000000"
-        app:smart_view_res="@layout/layout_smart_button"
-        app:vertical_padding="13dp"/>
+        android:src="@mipmap/icon_album"
+        app:bgColor="#b4282d"
+        app:innerPadding="15dp"
+        app:outerPadding="20dp"
+        app:shadowColor="#40000000"
+        app:verticalPadding="13dp"/>
 
     <com.ue.smartmenu.SmartMenu
         android:id="@+id/smartMenu3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        app:bg_color="#b4282d"
-        app:inner_padding="15dp"
-        app:outer_padding="20dp"
-        app:shadow_color="#40000000"
-        app:smart_view_res="@layout/layout_smart_button_2"
-        app:vertical_padding="13dp"/>
+        android:text="GO"
+        android:textSize="18sp"
+        app:bgColor="#b4282d"
+        app:innerPadding="15dp"
+        app:outerPadding="20dp"
+        app:shadowColor="#40000000"
+        app:verticalPadding="13dp"/>
 </LinearLayout>

@@ -2,19 +2,16 @@ package com.ue.smartmenu;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-
-import com.jake.smart.R;
 
 /**
  * Created by Jake on 2016/9/12.
@@ -26,26 +23,28 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
     /**
      * the max length of X
      */
-    private int mDotDistance;
-    private float mDotRadius = 6;
     private float mCenterX;
     private float mCenterY;
 
     private Paint mPaint;
     private Paint mBackgroundPaint;
 
-    private RectF mLeftRectF = new RectF();
-    private RectF mRightRectF = new RectF();
-
     private int mBackgroundColor;
     private int mShadowColor;
-    private int mDotColor;
 
-    private String text;
-    private int textSize;
-    private float imageRatio;
-    private int textColor;
+    private RectF mLeftRectF;
+    private RectF mRightRectF;
+    //def content
+    private int mDotColor;
+    private int mDotDistance;
+    private float mDotRadius;
+    //text content
+    private String mText;
+    //image content
     private int imageSrc;
+    private float imageRatio;
+
+    private boolean hasInit;
 
     public SmartButton(Context context) {
         this(context, null);
@@ -57,28 +56,7 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
 
     public SmartButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SmartButton);
-        mDotRadius = ta.getDimensionPixelSize(R.styleable.SmartButton_dotRadius, dip2px(context, 1));
-        mDotDistance = ta.getDimensionPixelSize(R.styleable.SmartButton_dotDistance, dip2px(context, 25));
-        mDotColor = ta.getColor(R.styleable.SmartButton_dotColor, Color.WHITE);
-        mShadowColor = ta.getColor(R.styleable.SmartButton_shadowColor, Color.WHITE);
-        mBackgroundColor = ta.getColor(R.styleable.SmartButton_bgColor, Color.BLACK);
-
-        text = ta.getString(R.styleable.SmartButton_android_text);
-        textSize = ta.getDimensionPixelSize(R.styleable.SmartButton_android_textSize, 15);
-        imageRatio = ta.getFloat(R.styleable.SmartButton_imageRatio, 0.5f);
-        textColor = ta.getColor(R.styleable.SmartButton_android_textColor, Color.WHITE);
-        imageSrc = ta.getResourceId(R.styleable.SmartButton_android_src, 0);
-
-        ta.recycle();
-
         init();
-    }
-
-    private int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
     }
 
     private void init() {
@@ -92,26 +70,23 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
-
-        if (!TextUtils.isEmpty(text)) {
-            mPaint.setStrokeWidth(3);
-            mPaint.setTextSize(textSize);
-            mPaint.setColor(textColor);
-            mPaint.setTextAlign(Paint.Align.LEFT);
-        } else {
-            mPaint.setColor(mDotColor);
-        }
+        //for text:
+        mPaint.setStrokeWidth(3);
+        mPaint.setTextAlign(Paint.Align.LEFT);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (!hasInit) {
+            return;
+        }
         drawBackground(canvas);
 
         if (imageSrc != 0) {
             drawImageContent(canvas);
             return;
         }
-        if (!TextUtils.isEmpty(text)) {
+        if (!TextUtils.isEmpty(mText)) {
             drawTextContent(canvas);
             return;
         }
@@ -133,10 +108,10 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
         adjustCanvas(canvas, 360 * mPercent);
 
         Rect bounds = new Rect();
-        mPaint.getTextBounds(text, 0, text.length(), bounds);
+        mPaint.getTextBounds(mText, 0, mText.length(), bounds);
         Paint.FontMetricsInt fontMetrics = mPaint.getFontMetricsInt();
         int baseline = (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
-        canvas.drawText(text, getMeasuredWidth() / 2 - bounds.width() / 2, baseline, mPaint);
+        canvas.drawText(mText, getMeasuredWidth() / 2 - bounds.width() / 2, baseline, mPaint);
     }
 
     private void drawCenter(Canvas canvas) {
@@ -182,8 +157,8 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int size = MeasureSpec.getSize(widthMeasureSpec);
         setMeasuredDimension(size, size);
-        mCenterX = getMeasuredWidth() / 2.f;
-        mCenterY = getMeasuredHeight() / 2.f;
+        mCenterX = getMeasuredWidth() * 0.5f;
+        mCenterY = getMeasuredHeight() * 0.5f;
     }
 
     @Override
@@ -192,17 +167,36 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
         invalidate();
     }
 
-    void setRadius(float radius) {
-        mDotRadius = radius;
-    }
+    void initDefContent(float dotRadius, int dotDistance, int dotColor) {
+        mDotRadius = dotRadius;
+        mDotDistance = dotDistance;
+        mDotColor = dotColor;
 
-    void setLength(int length) {
-        mDotDistance = length;
-    }
-
-    void setDotColor(int color) {
-        this.mDotColor = color;
         mPaint.setColor(mDotColor);
+        if (mLeftRectF == null) {
+            mLeftRectF = new RectF();
+            mRightRectF = new RectF();
+        }
+
+        hasInit = true;
+        invalidate();
+    }
+
+    void initImageContent(@DrawableRes int imageSrc, float imageRatio) {
+        this.imageSrc = imageSrc;
+        this.imageRatio = imageRatio;
+
+        hasInit = true;
+        invalidate();
+    }
+
+    void initTextContent(int textSize, int textColor, String text) {
+        mText = text;
+
+        mPaint.setTextSize(textSize);
+        mPaint.setColor(textColor);
+
+        hasInit = true;
         invalidate();
     }
 

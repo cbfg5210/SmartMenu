@@ -8,19 +8,14 @@
         <attr name="bgColor" format="color|reference"/>
         <attr name="shadowColor" format="color|reference"/>
         <attr name="smartViewRes" format="reference"/>
-    </declare-styleable>
-
-    <declare-styleable name="SmartButton">
-        <attr name="bgColor"/>
-        <attr name="shadowColor"/>
-
+        <!--smart button content:def-->
         <attr name="dotRadius" format="dimension"/>
         <attr name="dotDistance" format="dimension"/>
         <attr name="dotColor" format="color|reference"/>
-
+        <!--smart button content:image-->
         <attr name="android:src"/>
         <attr name="imageRatio" format="float"/>
-
+        <!--smart button content:text-->
         <attr name="android:textSize"/>
         <attr name="android:text"/>
         <attr name="android:textColor"/>

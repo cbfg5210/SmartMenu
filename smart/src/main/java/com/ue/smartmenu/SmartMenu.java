@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,13 +42,12 @@ public class SmartMenu extends ViewGroup {
     private int mVerticalPadding;
     private int mSwitchBtnSize;
 
-    private boolean mOpen;
-
     private RectF mRect = new RectF();
     private ValueAnimator mSwitchAnimation;
     private ValueAnimator mScaleAnimator;
 
     private Paint mBackgroundPaint;
+    private boolean mOpen;
 
     private int mSwitchDuration = 300;
     private int mScaleDuration = 100;
@@ -56,6 +56,20 @@ public class SmartMenu extends ViewGroup {
     private int mBackgroundColor;
     private int mShadowColor;
     private int smartViewRes;
+
+    /***SmartButton start***/
+    //def content
+    private int mDotColor;
+    private int mDotDistance;
+    private float mDotRadius;
+    //text content
+    private String text;
+    private int textSize;
+    private int textColor;
+    //image content
+    private int imageSrc;
+    private float imageRatio;
+    /*****SmartButton end*****/
 
     private View smartView;
 
@@ -70,12 +84,24 @@ public class SmartMenu extends ViewGroup {
         mBackgroundPaint.setColor(mBackgroundColor);
         mBackgroundPaint.setShadowLayer(15, 0, 0, mShadowColor);
 
-        if (smartViewRes == 0) {
-            smartViewRes = R.layout.view_smart_button;
-        }
-        smartView = LayoutInflater.from(getContext()).inflate(smartViewRes, null);
-        smartView.setOnClickListener(v -> toggle());
+        if (smartViewRes != 0) {
+            smartView = LayoutInflater.from(getContext()).inflate(smartViewRes, null);
+        } else {
+            SmartButton smartButton = new SmartButton(getContext());
+            smartButton.setShadowColor(mShadowColor);
+            smartButton.setBackgroundColor(mBackgroundColor);
 
+            if (imageSrc != 0) {
+                smartButton.initImageContent(imageSrc, imageRatio);
+            } else if (!TextUtils.isEmpty(text)) {
+                smartButton.initTextContent(textSize, textColor, text);
+            } else {
+                smartButton.initDefContent(mDotRadius, mDotDistance, mDotColor);
+            }
+            smartView = smartButton;
+        }
+
+        smartView.setOnClickListener(v -> toggle());
         addView(smartView, new LayoutParams(mSwitchBtnSize, mSwitchBtnSize));
 
         initScaleAnimator();
@@ -93,6 +119,17 @@ public class SmartMenu extends ViewGroup {
         mBackgroundColor = ta.getColor(R.styleable.SmartMenu_bgColor, Color.BLACK);
         mMenuHeight = mSwitchBtnSize - 2 * mVerticalPadding;
         smartViewRes = ta.getResourceId(R.styleable.SmartMenu_smartViewRes, 0);
+
+        mDotRadius = ta.getDimensionPixelSize(R.styleable.SmartMenu_dotRadius, dip2px(context, 2));
+        mDotDistance = ta.getDimensionPixelSize(R.styleable.SmartMenu_dotDistance, dip2px(context, 25));
+        mDotColor = ta.getColor(R.styleable.SmartMenu_dotColor, Color.WHITE);
+
+        text = ta.getString(R.styleable.SmartMenu_android_text);
+        textSize = ta.getDimensionPixelSize(R.styleable.SmartMenu_android_textSize, 16);
+        imageRatio = ta.getFloat(R.styleable.SmartMenu_imageRatio, 0.4f);
+        textColor = ta.getColor(R.styleable.SmartMenu_android_textColor, Color.WHITE);
+        imageSrc = ta.getResourceId(R.styleable.SmartMenu_android_src, 0);
+
         ta.recycle();
         init();
     }
@@ -142,11 +179,11 @@ public class SmartMenu extends ViewGroup {
     }
 
     public void setImages(int[] images, AdapterView.OnItemClickListener itemClickListener) {
-        fillLayout(new MenuAdapter(images, itemClickListener));
+        fillLayout(new SmartMenuAdapter(images, itemClickListener));
     }
 
     public void setTexts(String[] texts, AdapterView.OnItemClickListener itemClickListener) {
-        fillLayout(new MenuAdapter(texts, itemClickListener));
+        fillLayout(new SmartMenuAdapter(texts, itemClickListener));
     }
 
     private void fillLayout(BaseAdapter mAdapter) {

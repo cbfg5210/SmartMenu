@@ -15,17 +15,17 @@ import com.jake.smart.R;
 
 import name.gudong.statebackground.OneDrawable;
 
-class MenuAdapter extends BaseAdapter implements View.OnClickListener {
+class SmartMenuAdapter extends BaseAdapter implements View.OnClickListener {
     private int[] images;
     private String[] texts;
     private AdapterView.OnItemClickListener listener;
 
-    public MenuAdapter(int[] images, AdapterView.OnItemClickListener itemClickListener) {
+    public SmartMenuAdapter(int[] images, AdapterView.OnItemClickListener itemClickListener) {
         this.images = images;
         this.listener = itemClickListener;
     }
 
-    public MenuAdapter(String[] texts, AdapterView.OnItemClickListener itemClickListener) {
+    public SmartMenuAdapter(String[] texts, AdapterView.OnItemClickListener itemClickListener) {
         this.texts = texts;
         this.listener = itemClickListener;
     }
