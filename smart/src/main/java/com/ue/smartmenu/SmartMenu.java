@@ -76,6 +76,8 @@ public class SmartMenu extends ViewGroup {
         smartView = LayoutInflater.from(getContext()).inflate(smartViewRes, null);
         smartView.setOnClickListener(v -> toggle());
 
+        addView(smartView, new LayoutParams(mSwitchBtnSize, mSwitchBtnSize));
+
         initScaleAnimator();
         initSwitchAnimator();
     }
