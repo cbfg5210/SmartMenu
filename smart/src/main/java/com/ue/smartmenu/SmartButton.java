@@ -83,15 +83,24 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
 
     private void init() {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mPaint.setDither(true);
-        mPaint.setColor(mDotColor);
         mBackgroundPaint = new Paint();
         mBackgroundPaint.setAntiAlias(true);
         mBackgroundPaint.setDither(true);
         mBackgroundPaint.setColor(mBackgroundColor);
         mBackgroundPaint.setShadowLayer(15, 0, 0, mShadowColor);
+
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setDither(true);
+
+        if (!TextUtils.isEmpty(text)) {
+            mPaint.setStrokeWidth(3);
+            mPaint.setTextSize(textSize);
+            mPaint.setColor(textColor);
+            mPaint.setTextAlign(Paint.Align.LEFT);
+        } else {
+            mPaint.setColor(mDotColor);
+        }
     }
 
     @Override
@@ -99,21 +108,18 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
         drawBackground(canvas);
 
         if (imageSrc != 0) {
-            drawImage(canvas);
+            drawImageContent(canvas);
             return;
         }
         if (!TextUtils.isEmpty(text)) {
-            drawText(canvas);
+            drawTextContent(canvas);
             return;
         }
-        drawCenter(canvas);
-        drawContent(canvas);
+        drawDefContent(canvas);
     }
 
-    private void drawImage(Canvas canvas) {
-        Paint mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mPaint.setDither(true);//抖动处理，平滑处理
+    private void drawImageContent(Canvas canvas) {
+        adjustCanvas(canvas, 360 * mPercent);
 
         int wh = (int) (getMeasuredWidth() * imageRatio);
         int offset = (getMeasuredWidth() - wh) / 2;
@@ -123,12 +129,9 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
         canvas.drawBitmap(piece, offset, offset, mPaint);
     }
 
-    private void drawText(Canvas canvas) {
-        Paint mPaint = new Paint();
-        mPaint.setStrokeWidth(3);
-        mPaint.setTextSize(40);
-        mPaint.setColor(textColor);
-        mPaint.setTextAlign(Paint.Align.LEFT);
+    private void drawTextContent(Canvas canvas) {
+        adjustCanvas(canvas, 360 * mPercent);
+
         Rect bounds = new Rect();
         mPaint.getTextBounds(text, 0, text.length(), bounds);
         Paint.FontMetricsInt fontMetrics = mPaint.getFontMetricsInt();
@@ -147,7 +150,8 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
         canvas.translate(-mCenterX, -mCenterY);
     }
 
-    private void drawContent(Canvas canvas) {
+    private void drawDefContent(Canvas canvas) {
+        drawCenter(canvas);
         int length = (int) ((mDotDistance - 2 * mDotRadius) * mPercent);
         drawLeft(canvas, mDotRadius, length);
         drawRight(canvas, mDotRadius, length);
@@ -159,7 +163,6 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
         mLeftRectF.set(start, mCenterY - radius, start + length + 2 * mDotRadius, mCenterY + radius);
         canvas.drawRoundRect(mLeftRectF, radius, radius, mPaint);
         canvas.restore();
-
     }
 
     private void drawRight(Canvas canvas, float radius, int length) {
