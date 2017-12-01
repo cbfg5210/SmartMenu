@@ -85,14 +85,14 @@ public class SmartMenu extends ViewGroup {
     public SmartMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SmartMenu);
-        mOuterPadding = ta.getDimensionPixelSize(R.styleable.SmartMenu_outer_padding, dip2px(context, DEFAULT_PADDING));
-        mInnerPadding = ta.getDimensionPixelSize(R.styleable.SmartMenu_inner_padding, dip2px(context, DEFAULT_PADDING));
-        mVerticalPadding = ta.getDimensionPixelSize(R.styleable.SmartMenu_vertical_padding, dip2px(context, DEFAULT_PADDING));
-        mSwitchBtnSize = ta.getDimensionPixelSize(R.styleable.SmartMenu_smart_btn_size, dip2px(context, DEFAULT_BTN_SIZE));
-        mShadowColor = ta.getColor(R.styleable.SmartMenu_shadow_color, Color.WHITE);
-        mBackgroundColor = ta.getColor(R.styleable.SmartMenu_bg_color, Color.BLACK);
+        mOuterPadding = ta.getDimensionPixelSize(R.styleable.SmartMenu_outerPadding, dip2px(context, DEFAULT_PADDING));
+        mInnerPadding = ta.getDimensionPixelSize(R.styleable.SmartMenu_innerPadding, dip2px(context, DEFAULT_PADDING));
+        mVerticalPadding = ta.getDimensionPixelSize(R.styleable.SmartMenu_verticalPadding, dip2px(context, DEFAULT_PADDING));
+        mSwitchBtnSize = ta.getDimensionPixelSize(R.styleable.SmartMenu_smartBtnSize, dip2px(context, DEFAULT_BTN_SIZE));
+        mShadowColor = ta.getColor(R.styleable.SmartMenu_shadowColor, Color.WHITE);
+        mBackgroundColor = ta.getColor(R.styleable.SmartMenu_bgColor, Color.BLACK);
         mMenuHeight = mSwitchBtnSize - 2 * mVerticalPadding;
-        smartViewRes = ta.getResourceId(R.styleable.SmartMenu_smart_view_res, 0);
+        smartViewRes = ta.getResourceId(R.styleable.SmartMenu_smartViewRes, 0);
         ta.recycle();
         init();
     }

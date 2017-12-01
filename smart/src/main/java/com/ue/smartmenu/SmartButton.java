@@ -59,15 +59,15 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
         super(context, attrs, defStyle);
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SmartButton);
-        mDotRadius = ta.getDimensionPixelSize(R.styleable.SmartButton_dot_radius, dip2px(context, 1));
-        mDotDistance = ta.getDimensionPixelSize(R.styleable.SmartButton_dot_distance, dip2px(context, 25));
-        mDotColor = ta.getColor(R.styleable.SmartButton_dot_color, Color.WHITE);
-        mShadowColor = ta.getColor(R.styleable.SmartButton_shadow_color, Color.WHITE);
-        mBackgroundColor = ta.getColor(R.styleable.SmartButton_bg_color, Color.BLACK);
+        mDotRadius = ta.getDimensionPixelSize(R.styleable.SmartButton_dotRadius, dip2px(context, 1));
+        mDotDistance = ta.getDimensionPixelSize(R.styleable.SmartButton_dotDistance, dip2px(context, 25));
+        mDotColor = ta.getColor(R.styleable.SmartButton_dotColor, Color.WHITE);
+        mShadowColor = ta.getColor(R.styleable.SmartButton_shadowColor, Color.WHITE);
+        mBackgroundColor = ta.getColor(R.styleable.SmartButton_bgColor, Color.BLACK);
 
         text = ta.getString(R.styleable.SmartButton_android_text);
         textSize = ta.getDimensionPixelSize(R.styleable.SmartButton_android_textSize, 15);
-        imageRatio = ta.getFloat(R.styleable.SmartButton_image_ratio, 0.5f);
+        imageRatio = ta.getFloat(R.styleable.SmartButton_imageRatio, 0.5f);
         textColor = ta.getColor(R.styleable.SmartButton_android_textColor, Color.WHITE);
         imageSrc = ta.getResourceId(R.styleable.SmartButton_android_src, 0);
 

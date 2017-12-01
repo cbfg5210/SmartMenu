@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="SmartMenu">
-        <attr name="inner_padding" format="dimension"/>
-        <attr name="outer_padding" format="dimension"/>
-        <attr name="smart_btn_size" format="dimension"/>
-        <attr name="vertical_padding" format="dimension"/>
-        <attr name="bg_color" format="color|reference"/>
-        <attr name="shadow_color" format="color|reference"/>
-        <attr name="smart_view_res" format="reference"/>
+        <attr name="innerPadding" format="dimension"/>
+        <attr name="outerPadding" format="dimension"/>
+        <attr name="smartBtnSize" format="dimension"/>
+        <attr name="verticalPadding" format="dimension"/>
+        <attr name="bgColor" format="color|reference"/>
+        <attr name="shadowColor" format="color|reference"/>
+        <attr name="smartViewRes" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="SmartButton">
-        <attr name="dot_radius" format="dimension"/>
-        <attr name="dot_distance" format="dimension"/>
-        <attr name="dot_color" format="color|reference"/>
-        <attr name="bg_color"/>
-        <attr name="shadow_color"/>
+        <attr name="bgColor"/>
+        <attr name="shadowColor"/>
 
-        <attr name="image_ratio" format="float"/>
+        <attr name="dotRadius" format="dimension"/>
+        <attr name="dotDistance" format="dimension"/>
+        <attr name="dotColor" format="color|reference"/>
+
+        <attr name="android:src"/>
+        <attr name="imageRatio" format="float"/>
+
         <attr name="android:textSize"/>
         <attr name="android:text"/>
         <attr name="android:textColor"/>
-        <attr name="android:src"/>
     </declare-styleable>
 </resources>
