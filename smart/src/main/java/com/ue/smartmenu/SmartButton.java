@@ -3,10 +3,14 @@ package com.ue.smartmenu;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -37,6 +41,12 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
     private int mShadowColor;
     private int mDotColor;
 
+    private String text;
+    private int textSize;
+    private float imageRatio;
+    private int textColor;
+    private int imageSrc;
+
     public SmartButton(Context context) {
         this(context, null);
     }
@@ -54,6 +64,13 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
         mDotColor = ta.getColor(R.styleable.SmartButton_dot_color, Color.WHITE);
         mShadowColor = ta.getColor(R.styleable.SmartButton_shadow_color, Color.WHITE);
         mBackgroundColor = ta.getColor(R.styleable.SmartButton_bg_color, Color.BLACK);
+
+        text = ta.getString(R.styleable.SmartButton_android_text);
+        textSize = ta.getDimensionPixelSize(R.styleable.SmartButton_android_textSize, 15);
+        imageRatio = ta.getFloat(R.styleable.SmartButton_image_ratio, 0.5f);
+        textColor = ta.getColor(R.styleable.SmartButton_android_textColor, Color.WHITE);
+        imageSrc = ta.getResourceId(R.styleable.SmartButton_android_src, 0);
+
         ta.recycle();
 
         init();
@@ -80,8 +97,43 @@ class SmartButton extends View implements ValueAnimator.AnimatorUpdateListener {
     @Override
     protected void onDraw(Canvas canvas) {
         drawBackground(canvas);
+
+        if (imageSrc != 0) {
+            drawImage(canvas);
+            return;
+        }
+        if (!TextUtils.isEmpty(text)) {
+            drawText(canvas);
+            return;
+        }
         drawCenter(canvas);
         drawContent(canvas);
+    }
+
+    private void drawImage(Canvas canvas) {
+        Paint mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setDither(true);//抖动处理，平滑处理
+
+        int wh = (int) (getMeasuredWidth() * imageRatio);
+        int offset = (getMeasuredWidth() - wh) / 2;
+
+        Bitmap piece = BitmapFactory.decodeResource(getContext().getResources(), imageSrc);
+        piece = Bitmap.createScaledBitmap(piece, wh, wh, false);
+        canvas.drawBitmap(piece, offset, offset, mPaint);
+    }
+
+    private void drawText(Canvas canvas) {
+        Paint mPaint = new Paint();
+        mPaint.setStrokeWidth(3);
+        mPaint.setTextSize(40);
+        mPaint.setColor(textColor);
+        mPaint.setTextAlign(Paint.Align.LEFT);
+        Rect bounds = new Rect();
+        mPaint.getTextBounds(text, 0, text.length(), bounds);
+        Paint.FontMetricsInt fontMetrics = mPaint.getFontMetricsInt();
+        int baseline = (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
+        canvas.drawText(text, getMeasuredWidth() / 2 - bounds.width() / 2, baseline, mPaint);
     }
 
     private void drawCenter(Canvas canvas) {

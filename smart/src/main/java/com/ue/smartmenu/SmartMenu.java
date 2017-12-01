@@ -71,7 +71,7 @@ public class SmartMenu extends ViewGroup {
         mBackgroundPaint.setShadowLayer(15, 0, 0, mShadowColor);
 
         if (smartViewRes == 0) {
-            smartViewRes = R.layout.layout_smart_button;
+            smartViewRes = R.layout.view_smart_button;
         }
         smartView = LayoutInflater.from(getContext()).inflate(smartViewRes, null);
         smartView.setOnClickListener(v -> toggle());

@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         SmartMenu smartMenu = findViewById(R.id.smartMenu);
         SmartMenu smartMenu2 = findViewById(R.id.smartMenu2);
+        SmartMenu smartMenu3 = findViewById(R.id.smartMenu3);
 
         smartMenu.setTexts(new String[]{
                 "A",
@@ -47,6 +48,17 @@ public class MainActivity extends AppCompatActivity {
 //        smartMenu2.setSmartListener(v -> {
 //            toast("smart");
 //        });
+
+        smartMenu3.setTexts(new String[]{
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+        }, (AdapterView<?> parent, View view, int position, long id) -> {
+            toast("item" + position);
+        });
     }
 
     private void toast(String msg) {

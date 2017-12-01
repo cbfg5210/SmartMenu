@@ -16,11 +16,7 @@
         <attr name="dot_color" format="color|reference"/>
         <attr name="bg_color"/>
         <attr name="shadow_color"/>
-    </declare-styleable>
 
-    <declare-styleable name="ContentButton">
-        <attr name="bg_color"/>
-        <attr name="shadow_color"/>
         <attr name="image_ratio" format="float"/>
         <attr name="android:textSize"/>
         <attr name="android:text"/>
