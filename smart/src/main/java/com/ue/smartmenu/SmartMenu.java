@@ -98,7 +98,7 @@ public class SmartMenu extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         //Math.ceil(x) 返回大于参数x的最小整数,即对浮点数向上取整.
-        int layerCount = (getChildCount() - 1) / 2;
+        int layerCount = (int) Math.ceil((getChildCount() - 1) * 0.5);
         if (layerCount <= 0) {
             smartView.layout(
                     getMeasuredWidth() / 2 - mSwitchBtnSize / 2,
@@ -111,6 +111,7 @@ public class SmartMenu extends ViewGroup {
         for (int i = 1; i < getChildCount(); i++) {
             View view = getChildAt(i);
             view.layout(left, mVerticalPadding, left + view.getMeasuredWidth(), getMeasuredHeight() - mVerticalPadding);
+
             left += view.getMeasuredWidth() + mInnerPadding;
             if (i == layerCount) {
                 view = getChildAt(0);
