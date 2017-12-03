@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion buildVersions.targetSdk
     defaultConfig {
-        applicationId "com.jake.smartmenu"
-        minSdkVersion 14
-        targetSdkVersion 26
+        applicationId "com.ue.smart_menu"
+        minSdkVersion buildVersions.minSdk
+        targetSdkVersion buildVersions.targetSdk
         versionCode 1
         versionName "1.0"
     }
@@ -22,8 +22,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile project(':smart')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation deps.support.app_compat
+    implementation project(':smart')
+    implementation deps.oneDrawable
 }
