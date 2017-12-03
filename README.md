@@ -1,5 +1,5 @@
 
-##Inspired By [MeterialUp](https://material.uplabs.com/posts/options-floating-interaction)
+##Inspired By [xue5455-SmartMenu](https://github.com/xue5455/SmartMenu)
  
  
 ###Screenshot
@@ -8,56 +8,63 @@
 ###How To Use
 ```
     <declare-styleable name="SmartMenu">
-        <attr name="inner_padding" format="dimension" />  
-        <attr name="outer_padding" format="dimension" />
-        <attr name="smart_btn_size" format="dimension" />
-        <attr name="vertical_padding" format="dimension" />
-        <attr name="dot_radius" format="dimension" />
-        <attr name="dot_distance" format="dimension" />
-        <attr name="dot_color" format="color|reference" />
-        <attr name="bg_color" format="color|reference" />
-        <attr name="shadow_color" format="color|reference" />
-    </declare-styleable>
+            <attr name="innerPadding" format="dimension"/>//èœå•é¡¹è·ç¦»
+            <attr name="outerPadding" format="dimension"/>//èœå•å·¦å³è¾¹ç•Œè·ç¦»
+            <attr name="smartBtnSize" format="dimension"/>//ä¸­é—´æŒ‰é’®çš„å°ºå¯¸
+            <attr name="verticalPadding" format="dimension"/>//èœå•çš„ä¸Šè¾¹ç•Œå’Œä¸­é—´æŒ‰é’®çš„ä¸Šè¾¹ç•Œçš„è·ç¦»
+            <attr name="bgColor" format="color|reference"/>//èƒŒæ™¯è‰²
+            <attr name="shadowColor" format="color|reference"/>//é˜´å½±é¢œè‰²
+            <attr name="smartViewRes" format="reference"/>//è‡ªå®šä¹‰çš„ä¸­é—´æŒ‰é’®å¸ƒå±€
+            <!--smart button content:def-->
+            <attr name="dotRadius" format="dimension"/>//ä¸­é—´æŒ‰é’®çš„å°åœ†ç‚¹çš„åŠå¾„
+            <attr name="dotDistance" format="dimension"/>//å·¦è¾¹çš„å°åœ†ç‚¹å’Œå³è¾¹çš„å°åœ†ç‚¹çš„è·ç¦»(åŒ…æ‹¬å·¦å³åœ†ç‚¹çš„ç›´å¾„)
+            <attr name="dotColor" format="color|reference"/>//åœ†ç‚¹çš„é¢œè‰²
+            <!--smart button content:image-->
+            <attr name="android:src"/>//è®¾ç½®ä¸­é—´æŒ‰é’®çš„å†…å®¹ä¸ºå›¾ç‰‡
+            <attr name="imageRatio" format="float"/>//å›¾ç‰‡æ¯”ä¾‹
+            <!--smart button content:text-->
+            <attr name="android:text"/>//è®¾ç½®ä¸­é—´æŒ‰é’®çš„å†…å®¹ä¸ºæ–‡å­—
+            <attr name="android:textSize"/>//æ–‡å­—å¤§å°
+            <attr name="android:textColor"/>//æ–‡å­—é¢œè‰²
+        </declare-styleable>
 ```
->inner_padding ¡ª¡ª Í¼±êÖ®¼äµÄ¾àÀë
 
-<br>
+ä½¿ç”¨æ–¹å¼ï¼š
 
->outer_padding ¡ª¡ª ×óÓÒ±ß½ç¾àÀëÍ¼±êµÄ¾àÀë
-
-<br>
-
->smart_btn_size ¡ª¡ª ÖĞ¼äµÄ°´Å¥µÄ³ß´ç
-
-<br>
-
->vertical_padding ¡ª¡ª ²Ëµ¥µÄÉÏ±ß½çºÍÖĞ¼ä°´Å¥µÄÉÏ±ß½çµÄ¾àÀë
-
-<br>
-
->dot_radius ¡ª¡ª ÖĞ¼ä°´Å¥µÄĞ¡Ô²µãµÄ°ë¾¶
-
-<br>
-
->dot_distance ¡ª¡ª ×ó±ßµÄĞ¡Ô²µãºÍÓÒ±ßµÄĞ¡Ô²µãµÄ¾àÀë(°üÀ¨×óÓÒÔ²µãµÄÖ±¾¶)
-
-<br>
-
->dot_color ¡ª¡ª Ô²µãµÄÑÕÉ«
-
-<br>
-
->bg_color ¡ª¡ª ¿Ø¼şµÄ±³¾°ÑÕÉ«
-
-<br>
-
->shadow_color ¡ª¡ª ÒõÓ°µÄÑÕÉ«
-
-
-
-MenuAdapter
-
+ä¸€ã€é»˜è®¤ä¸­é—´æŒ‰é’®ï¼Œèœå•é¡¹ä½¿ç”¨å›¾ç‰‡ï¼š
 ```
+smartMenu.setImages(
+                new int[]{
+                        R.mipmap.icon_album,
+                        R.mipmap.icon_comment,
+                        R.mipmap.icon_comment,
+                        R.mipmap.icon_comment,
+                        R.mipmap.icon_draft,
+                        R.mipmap.icon_like
+                }
+                , (AdapterView<?> parent, View view, int position, long id) -> {
+                    toast("item" + position);
+                });
+```
+
+äºŒã€é»˜è®¤ä¸­é—´æŒ‰é’®ï¼Œèœå•é¡¹ä½¿ç”¨æ–‡å­—ï¼š
+```
+smartMenu.setTexts(new String[]{
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+        }, (AdapterView<?> parent, View view, int position, long id) -> {
+            toast("item" + position);
+        });
+```
+
+ä¸‰ã€è‡ªå®šä¹‰èœå•é¡¹ï¼š
+```
+smartMenu.setAdapter(menuAdapter);
+
 public class MenuAdapter extends BaseAdapter implements View.OnClickListener{
 
     private int[] images = new int[]{R.mipmap.icon_album,
@@ -104,30 +111,26 @@ public class MenuAdapter extends BaseAdapter implements View.OnClickListener{
 
 }
 ```
-Í¨¹ı¸øSmartMenuÉèÖÃAdapterÀ´Ìí¼Óicon£¬countÊıÄ¿ĞèÒªÊÇÅ¼Êı£¬·ñÔò¿í¶È¼ÆËã»áÓĞ´íÎó¡£
 
+å››ï¼šè‡ªå®šä¹‰ä¸­é—´æŒ‰é’®ï¼š<br>
+1ã€è®¾ç½®ä¸­é—´æŒ‰é’®ä¸ºå›¾ç‰‡ï¼š
+```
+android:src="@mipmap/icon_album"
+//app:imageRatio="0.4"
+```
 
+2ã€è®¾ç½®ä¸­é—´æŒ‰é’®ä¸ºæ–‡å­—ï¼š
+```
+android:text="GO"
+android:textSize="18sp"
+android:textColor="@color/white"
+```
 
-###License
+3ã€è‡ªå®šä¹‰ä¸­é—´æŒ‰é’®:
+```
+app:smartViewRes="@layout/layout_smart"
+```
 
-MIT License
-
-Copyright (c) 2016 Jake
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+å­˜åœ¨çš„é—®é¢˜ï¼š<br>
+1ã€èœå•é¡¹ä¸ºæ–‡å­—æ—¶çš„ç‚¹å‡»æ•ˆæœå¾…ä¼˜åŒ–ï¼›<br>
+2ã€èœå•é¡¹ä¸ºæ–‡å­—æ—¶é•¿åº¦å·®è·ä¼šå½±å“æ”¶ç¼©æ•ˆæœï¼›
