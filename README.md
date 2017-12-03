@@ -1,5 +1,5 @@
 
-##Inspired By [xue5455-SmartMenu](https://github.com/xue5455/SmartMenu)
+##base on [xue5455-SmartMenu](https://github.com/xue5455/SmartMenu)
  
  
 ###Screenshot
