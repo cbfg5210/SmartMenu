@@ -62,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
         smartMenu3.setTexts(new String[]{
                 "AAA",
                 "BBB",
-//                "C",
-                "D",
-                "E",
-                "F",
+                "C",
+//                "D",
+//                "E",
+//                "F",
         }, (AdapterView<?> parent, View view, int position, long id) -> {
             toast("item" + position);
         });
